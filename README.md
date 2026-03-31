@@ -92,11 +92,11 @@ The final model was selected based on validation performance, with Macro-F1 used
 |------|----------|
 | Logistic Regression | 0.4972 |
 | Random Forest | 0.5456 |
-| SVM & Gradient Boost| 0.5902 |
-| KNN | 0.3065 |
-| Extra Trees | 0.5524 |
+| SVM | 0.5902 |
+| KNN | 0.3970 |
+| Extra Trees | 0.5645 |
 
-Among the evaluated models, Extra Trees achieved the highest Macro-F1 score of 0.5524, followed closely by Random Forest at 0.5460. This suggests that tree-based ensembles methods performed best and were better at capturing the non-linear relationships in the extracted DSP feature space. The baseline was decent but clearly weaker. KNN did not work well for this feature space, hence the **Extra Trees is chosen as the final model.**
+Among the evaluated models, SVM achieved the highest Macro-F1 score of 0.5902, followed closely by Extra Trees at 0.5645. This suggests that SVM performed best at capturing the non-linear relationships in the extracted DSP feature space, likely due to its effectiveness in high-dimensional settings. The baseline was decent but clearly weaker. KNN did not work well for this feature space, hence **SVM is chosen as the final model**.
 
 ## Augmentation 
 The best practical setup is:
