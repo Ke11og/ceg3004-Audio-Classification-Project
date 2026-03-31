@@ -80,7 +80,9 @@ Several machine learning models were evaluated on the extracted DSP feature vect
 - **Gradient Boosting** was tested as another ensemble-based method that iteratively improves classification performance.
 - **KNN** was included as a distance-based classifier to compare how well samples cluster in the extracted feature space.
 - **Extra Trees** was tested as another ensemble tree-based model that introduces additional randomness and can improve generalization.
-  
+
+To ensure a fair comparison, all candidate models were evaluated using the same extracted feature set, the same stratified train-validation split, and the same evaluation metric. This avoided inconsistencies that can arise when models are tested separately under different notebook states or random conditions.
+
 The final model was selected based on validation performance, with Macro-F1 used as the main comparison metric.
 
 | Model | Macro-F1 |
