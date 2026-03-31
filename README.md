@@ -79,15 +79,31 @@ Several machine learning models were evaluated on the extracted DSP feature vect
 - **SVM** was included because it often performs well on structured, hand-crafted audio features and can model non-linear decision boundaries.
 - **Gradient Boosting** was tested as another ensemble-based method that iteratively improves classification performance.
 - **KNN** was included as a distance-based classifier to compare how well samples cluster in the extracted feature space.
-
+- **Extra Trees** was tested as another ensemble tree-based model that introduces additional randomness and can improve generalization.
+  
 The final model was selected based on validation performance, with Macro-F1 used as the main comparison metric.
 
 | Model | Macro-F1 |
 |------|----------|
-| Logistic Regression | 0.4068229548229548 |
-| Random Forest | 0.5460401820401821 |
-| SVM | 0.4767597402597403 |
-| Gradient Boosting | 0.4767597402597403 |
+| Logistic Regression | 0.4068 |
+| Random Forest | 0.5460 |
+| SVM & Gradient Boost| 0.4768 |
 | KNN | 0.30648421948421944 |
-| Extra Trees | 0.5523535353535354 |
+| Extra Trees | 0.5524 |
 
+Among the evaluated models, Extra Trees achieved the highest Macro-F1 score of 0.5524, followed closely by Random Forest at 0.5460. This suggests that tree-based ensembles methods performed best and were better at capturing the non-linear relationships in the extracted DSP feature space. The baseline was decent but clearly weaker. KNN did not work well for this feature space, hence the **Extra Trees is chosen as the final model.**
+
+
+## How to Run
+1. Open the notebook in Google Colab
+2. Install the required dependencies
+3. Prepare the dataset in the expected folder structure
+4. Run all cells from top to bottom
+5. The notebook will generate the trained model file and prediction CSV
+
+## Repository Structure
+- `CEG3004_Project_Colab.ipynb` — main project notebook
+- `README.md` — project overview and documentation
+- `requirements.txt` — required Python packages
+- `results/` — generated plots and outputs
+- `models/` — saved trained models
