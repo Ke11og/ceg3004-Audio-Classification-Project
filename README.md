@@ -57,18 +57,21 @@ These steps helped reduce unnecessary variation across clips and improved the st
 ## Feature Extraction
 A set of DSP-based features was extracted from each audio clip to represent its acoustic characteristics in a compact numerical form.
 
-The extracted features included:
-- MFCCs
-- Delta MFCCs
-- Delta-delta MFCCs
-- Log-mel spectrogram statistics
-- Spectral centroid
-- Spectral bandwidth
-- Spectral rolloff
-- Zero-crossing rate
-- RMS energy
+The following audio features were extracted to capture both the spectral and temporal characteristics of the environmental sound signals:
 
-For each feature type, summary statistics such as mean, standard deviation, and median were   computed across frames to form a fixed-length feature vector for classification.  
+| Feature | What it captures | Why it is useful |
+|---|---|---|
+| **MFCCs** | The overall spectral shape and timbre of the audio, based on human hearing characteristics | Helps distinguish different sound types by capturing tonal and frequency patterns |
+| **Delta MFCCs** | The rate of change of MFCCs over time | Adds temporal information and shows how the sound evolves frame by frame |
+| **Delta-delta MFCCs** | The acceleration of change of MFCCs over time | Captures more detailed dynamic behaviour of the sound |
+| **Log-mel spectrogram statistics** | Summary statistics of energy distribution across mel-scaled frequency bands over time | Provides a compact representation of time-frequency energy patterns |
+| **Spectral centroid** | The center of mass of the frequency spectrum | Indicates whether a sound is brighter or darker |
+| **Spectral bandwidth** | The spread of frequencies around the spectral centroid | Describes whether the sound is narrow-band or wide-band |
+| **Spectral rolloff** | The frequency below which most of the spectral energy is concentrated | Helps identify how much high-frequency content is present |
+| **Zero-crossing rate** | How often the waveform crosses the zero-amplitude axis | Useful for distinguishing noisy or percussive sounds from smoother tonal sounds |
+| **RMS energy** | The overall signal energy or loudness | Helps measure intensity and separate quiet from loud sounds |
+
+For each feature type, summary statistics such as mean, standard deviation, and median were computed across frames to form a fixed-length feature vector for classification.  
 
 ## Models Evaluated
 
