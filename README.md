@@ -90,14 +90,27 @@ The final model was selected based on validation performance, with Macro-F1 used
 
 | Model | Macro-F1 |
 |------|----------|
-| Logistic Regression | 0.4068 |
-| Random Forest | 0.5460 |
-| SVM & Gradient Boost| 0.4768 |
+| Logistic Regression | 0.4972 |
+| Random Forest | 0.5456 |
+| SVM & Gradient Boost| 0.5902 |
 | KNN | 0.3065 |
 | Extra Trees | 0.5524 |
 
 Among the evaluated models, Extra Trees achieved the highest Macro-F1 score of 0.5524, followed closely by Random Forest at 0.5460. This suggests that tree-based ensembles methods performed best and were better at capturing the non-linear relationships in the extracted DSP feature space. The baseline was decent but clearly weaker. KNN did not work well for this feature space, hence the **Extra Trees is chosen as the final model.**
 
+## Augmentation 
+The best practical setup is:
+
+Ror each training clip:
+• Always extract features from the original waveform
+• Optionally extract features from one augmented version
+• Do not augment validation clips
+• Do not stack too many augmentations on the same clip at first
+
+Use:
+• Mild Gaussian noise
+• Mild gain scaling
+• Random lowpass / bandpass effect
 
 ## How to Run
 1. Open the notebook in Google Colab
@@ -111,4 +124,3 @@ Among the evaluated models, Extra Trees achieved the highest Macro-F1 score of 0
 - `README.md` — project overview and documentation
 - `requirements.txt` — required Python packages
 - `results/` — generated plots and outputs
-- `models/` — saved trained models
