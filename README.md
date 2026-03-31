@@ -81,6 +81,7 @@ Several machine learning models were evaluated on the extracted DSP feature vect
 - **KNN** was included as a distance-based classifier to compare how well samples cluster in the extracted feature space.
 
 The final model was selected based on validation performance, with Macro-F1 used as the main comparison metric.
+
 | Model | Macro-F1 |
 |------|----------|
 | Logistic Regression | 0.4068229548229548 |
@@ -89,10 +90,4 @@ The final model was selected based on validation performance, with Macro-F1 used
 | Gradient Boosting | 0.4767597402597403 |
 | KNN | 0.30648421948421944 |
 | Extra Trees | 0.5523535353535354 |
-|-------------|--------------------|
-Logistic Regression- Macro-F1: 0.4068229548229548
-SVM- Macro-F1: 0.4767597402597403
-Random Forest- Macro-F1: 0.5460401820401821
-GradientBoosting- Macro-F1: 0.4767597402597403
-KNN- Macro-F1: 0.30648421948421944
-Extra Trees- Macro-F1: 0.5523535353535354
+
