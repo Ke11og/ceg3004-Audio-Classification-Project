@@ -101,15 +101,15 @@ Among the evaluated models, Extra Trees achieved the highest Macro-F1 score of 0
 ## Augmentation 
 The best practical setup is:
 
-Ror each training clip:
-• Always extract features from the original waveform
-• Optionally extract features from one augmented version
-• Do not augment validation clips
-• Do not stack too many augmentations on the same clip at first
+Ror each training clip:  
+• Always extract features from the original waveform  
+• Optionally extract features from one augmented version  
+• Do not augment validation clips  
+• Do not stack too many augmentations on the same clip at first  
 
-Use:
-• Mild Gaussian noise
-• Mild gain scaling
+Use:  
+• Mild Gaussian noise  
+• Mild gain scaling  
 • Random lowpass / bandpass effect
 
 ## How to Run
