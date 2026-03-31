@@ -1,0 +1,29 @@
+```gitignore
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter / Colab
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Virtual environments
+venv/
+.env/
+
+# Large generated files
+*.zip
+*.wav
+*.mp3
+
+# Model outputs (optional)
+# Uncomment if you do NOT want to upload all saved models
+# models/*.joblib
+
+# Prediction outputs (optional)
+# results/predictions/*.csv
