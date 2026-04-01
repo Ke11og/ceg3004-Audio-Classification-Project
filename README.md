@@ -11,6 +11,8 @@ The main objectives are:
 • Use a machine learning classifier to classify into the 50 sound classes  
 • Demonstrates robustness to noise and bandwidth distortions  
 
+---
+
 ### Dataset  
 - **Total clips:** 2,000
 - **Number of classes:** 50
