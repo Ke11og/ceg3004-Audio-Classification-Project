@@ -35,7 +35,6 @@ These variations are intended to evaluate how robust the DSP pipeline and classi
 
 ---
 
-
 ### Pipeline of the project  
 • Setup  
 • Dataset loading  
@@ -48,7 +47,7 @@ These variations are intended to evaluate how robust the DSP pipeline and classi
 
 
 ## Methodology  
-The overall workflow of the project was:
+The overall workflow of the project is:
 1. Load the labelled training audio
 2. Apply preprocessing to standardize the waveforms
 3. Extract DSP-based features from each clip
@@ -63,12 +62,11 @@ The overall workflow of the project was:
 Before feature extraction, each audio clip was preprocessed to make the signals more consistent and suitable for analysis.
 
 The preprocessing steps were:
-- Invalid numerical values were replaced using `np.nan_to_num`
-- DC offset was removed by centering the waveform around zero
-- Leading and trailing silence were trimmed
-- Peak normalization was applied so that clips had more consistent amplitude
-- A pre-emphasis filter was used to highlight higher-frequency details
-- Each clip was padded or truncated to a fixed duration of 5 seconds
+- Replace invalid numerical values using `np.nan_to_num`
+- Remove DC offset by centering the waveform around zero
+- Apply peak normalization to reduce amplitude variation
+- Apply a pre-emphasis filter to strengthen higher-frequency content
+- Pad or truncate each clip to a fixed duration of **5 seconds**
 
 These steps helped reduce unnecessary variation across clips and improved the stability
 
@@ -79,17 +77,31 @@ The following audio features were extracted to capture both the spectral and tem
 
 | Feature | What it captures | Why it is useful |
 |---|---|---|
-| **MFCCs** | The overall spectral shape and timbre of the audio, based on human hearing characteristics | Helps distinguish different sound types by capturing tonal and frequency patterns |
-| **Delta MFCCs** | The rate of change of MFCCs over time | Adds temporal information and shows how the sound evolves frame by frame |
-| **Delta-delta MFCCs** | The acceleration of change of MFCCs over time | Captures more detailed dynamic behaviour of the sound |
-| **Log-mel spectrogram statistics** | Summary statistics of energy distribution across mel-scaled frequency bands over time | Provides a compact representation of time-frequency energy patterns |
-| **Spectral centroid** | The center of mass of the frequency spectrum | Indicates whether a sound is brighter or darker |
-| **Spectral bandwidth** | The spread of frequencies around the spectral centroid | Describes whether the sound is narrow-band or wide-band |
-| **Spectral rolloff** | The frequency below which most of the spectral energy is concentrated | Helps identify how much high-frequency content is present |
-| **Zero-crossing rate** | How often the waveform crosses the zero-amplitude axis | Useful for distinguishing noisy or percussive sounds from smoother tonal sounds |
-| **RMS energy** | The overall signal energy or loudness | Helps measure intensity and separate quiet from loud sounds |
+| **MFCCs** | Overall spectral shape and timbre based on human auditory perception | Helps distinguish sound classes using tonal and frequency patterns |
+| **Delta MFCCs** | First-order temporal change of MFCCs | Adds information about how the sound evolves over time |
+| **Delta-delta MFCCs** | Second-order temporal change of MFCCs | Captures more detailed dynamic behaviour |
+| **Log-mel spectrogram statistics** | Distribution of energy across mel-scaled frequency bands | Provides a compact time-frequency representation |
+| **Spectral centroid** | Centre of mass of the spectrum | Indicates whether a sound is brighter or darker |
+| **Spectral bandwidth** | Spread of frequencies around the centroid | Describes whether the sound is narrow-band or wide-band |
+| **Spectral rolloff** | Frequency below which most spectral energy is concentrated | Helps identify high-frequency content |
+| **Zero-crossing rate** | Number of zero crossings in the waveform | Useful for noisy, percussive, or sharp sounds |
+| **RMS energy** | Overall signal energy | Helps represent loudness and intensity |
 
-For each feature type, summary statistics such as mean, standard deviation, and median were computed across frames to form a fixed-length feature vector for classification.  
+For each feature type, summary statistics such as **mean**, **standard deviation**, and **median** were computed across time frames to produce a fixed-length feature vector for classification.
+
+## Data Augmentation
+To improve robustness, lightweight audio augmentation was applied during training.
+
+The augmentation pipeline included:
+
+- Mild random gain scaling
+- Optional white Gaussian noise
+- Optional Butterworth-based filtering
+- Optional bandwidth limitation via resampling
+
+Only mild augmentation was used so that the model could learn to handle distorted audio without drifting too far away from the clean training distribution. The augmented clips were used to improve robustness, while the original clips remained part of the training set.
+
+---
 
 ## Models Evaluated
 
@@ -98,7 +110,6 @@ Several machine learning models were evaluated on the extracted DSP feature vect
 - **Logistic Regression** was used as the baseline classifier because it is simple, fast, and provides a useful reference point.
 - **Random Forest** was tested as a tree-based ensemble model that can handle non-linear feature relationships.
 - **SVM** was included because it often performs well on structured, hand-crafted audio features and can model non-linear decision boundaries.
-- **Gradient Boosting** was tested as another ensemble-based method that iteratively improves classification performance.
 - **KNN** was included as a distance-based classifier to compare how well samples cluster in the extracted feature space.
 - **Extra Trees** was tested as another ensemble tree-based model that introduces additional randomness and can improve generalization.
 
@@ -108,27 +119,35 @@ The final model was selected based on validation performance, with Macro-F1 used
 
 | Model | Macro-F1 |
 |------|----------|
-| Logistic Regression | 0.4972 |
-| Random Forest | 0.5456 |
-| SVM | 0.5902 |
-| KNN | 0.3970 |
-| Extra Trees | 0.5645 |
+| Logistic Regression | 0.7138 |
+| Random Forest | 0.6525 |
+| SVM | 0.7152 |
+| KNN | 0.4669 |
+| Extra Trees | 0.6553 |
 
-Among the evaluated models, SVM achieved the highest Macro-F1 score of 0.5902, followed closely by Extra Trees at 0.5645. This suggests that SVM performed best at capturing the non-linear relationships in the extracted DSP feature space, likely due to its effectiveness in high-dimensional settings. The baseline was decent but clearly weaker. KNN did not work well for this feature space, hence **SVM is chosen as the final model**.
+Among the evaluated models, **SVM achieved the highest Macro-F1 score of 0.7152**, outperforming the other classical machine learning models. This indicates that SVM was the most effective at separating the different sound classes in the extracted DSP feature space.
+### Final Model Selection
+Based on the validation results, **SVM was selected as the final model** for submission.
 
-## Augmentation 
-The best practical setup is:
+---
 
-Ror each training clip:  
-• Always extract features from the original waveform  
-• Optionally extract features from one augmented version  
-• Do not augment validation clips  
-• Do not stack too many augmentations on the same clip at first  
+## Final Validation Summary
+The final validation output achieved:
 
-Use:  
-• Mild Gaussian noise  
-• Mild gain scaling  
-• Random lowpass / bandpass effect
+- **Accuracy:** 0.72
+- **Macro-F1:** 0.7152
+- **Weighted F1:** 0.72
+
+The class-wise classification report showed that many classes performed strongly, while more ambiguous environmental sounds such as `washing_machine`, `wind`, and `vacuum_cleaner` remained more challenging. Overall, the results suggest that the DSP feature set and SVM classifier were able to capture useful distinctions across a wide range of environmental sound classes.
+
+---
+
+## Why SVM Was Chosen
+SVM was chosen as the final model because it performed best on the extracted hand-crafted DSP features. Compared with the other tested models, it showed stronger class separation and better overall Macro-F1 performance.
+
+This is consistent with the fact that SVM often works well in high-dimensional feature spaces built from MFCCs, spectral statistics, and other structured audio descriptors.
+
+---
 
 ## How to Run
 1. Open the notebook in Google Colab
@@ -138,7 +157,9 @@ Use:
 5. The notebook will generate the trained model file and prediction CSV
 
 ## Repository Structure
-- `CEG3004_Project_Colab.ipynb` — main project notebook
-- `README.md` — project overview and documentation
-- `requirements.txt` — required Python packages
-- `results/` — generated plots and outputs
+```text
+.
+├── CEG3004_Project_Colab.ipynb   # Main notebook
+├── README.md                     # Project documentation
+├── requirements.txt              # Python dependencies
+└── results/                      # Generated outputs and plots
