@@ -1,9 +1,8 @@
 numpy
-scipy
 pandas
-scikit-learn
 librosa
-soundfile
-tqdm
+scikit-learn
+scipy
 joblib
+tqdm
 matplotlib
