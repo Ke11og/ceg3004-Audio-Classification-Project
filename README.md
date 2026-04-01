@@ -161,5 +161,6 @@ This is consistent with the fact that SVM often works well in high-dimensional f
 .
 ├── CEG3004_Project_Colab.ipynb   # Main notebook
 ├── README.md                     # Project documentation
-├── requirements.txt              # Python dependencies
-└── results/                      # Generated outputs and plots
+├── Pr_33_model.joblib            # Trained model file
+├── Pr_33_model.csv               # Submission predictions
+└── requirements.txt              # Python dependencies
