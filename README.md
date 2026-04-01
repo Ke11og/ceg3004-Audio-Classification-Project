@@ -182,7 +182,7 @@ This is consistent with the fact that SVM often works well in high-dimensional f
 ```text
 .
 ├── CEG3004_Project_Colab.ipynb   # Main notebook
-├── README.md                     # Project documentation
 ├── Pr_33_model.joblib            # Trained model file
 ├── Pr_33_model.csv               # Submission predictions
+├── README.md                     # Project documentation
 └── requirements.txt              # Python dependencies
