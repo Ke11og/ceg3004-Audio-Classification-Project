@@ -2,7 +2,7 @@
 
 ## Overview
 This project implements an audio classification pipeline for the ESC-50 environmental sound dataset (50 classes, 2000 clips). The pipeline extracts hand-crafted DSP features from audio waveforms and classifies them using a Support Vector Machine (SVM) with an RBF kernel. The system is evaluated on clean, noisy, and band-limited versions of the submission set to assess robustness under realistic signal distortions.
----
+
 
 ## Objective
 The main objectives are:  
