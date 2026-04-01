@@ -1,4 +1,5 @@
-# CEG3004 Audio Classification Project  Pr_33
+# CEG3004 Audio Classification Project  
+Group: Pr_33
 
 ## Overview
 This project implements an audio classification pipeline for the ESC-50 environmental sound dataset (50 classes, 2000 clips). The pipeline extracts hand-crafted DSP features from audio waveforms and classifies them using a Support Vector Machine (SVM) with an RBF kernel. The system is evaluated on clean, noisy, and band-limited versions of the submission set to assess robustness under realistic signal distortions.
@@ -62,13 +63,15 @@ The overall workflow of the project is:
 Before feature extraction, each audio clip was preprocessed to make the signals more consistent and suitable for analysis.
 
 The preprocessing steps were:
-- Replace invalid numerical values using `np.nan_to_num`
-- Remove DC offset by centering the waveform around zero
-- Apply peak normalization to reduce amplitude variation
-- Apply a pre-emphasis filter to strengthen higher-frequency content
-- Pad or truncate each clip to a fixed duration of **5 seconds**
 
-These steps helped reduce unnecessary variation across clips and improved the stability
+- Replace invalid numerical values using `np.nan_to_num`
+- DC offset was removed by centering the waveform around zero
+- Peak normalization was applied so that the maximum absolute amplitude was scaled to 1.0, reducing dependence on recording gain and ensuring that the extracted features reflected spectral shape rather than overall signal level
+- A pre-emphasis filter was applied to strengthen higher-frequency content using a first-order FIR filter, 
+𝐻(𝑧)=1−0.97z^−1. This helped compensate for the natural spectral tilt in environmental recordings, where low-frequency energy often dominates, and improved the discriminability of mel-scaled features in the upper frequency bands
+- Each clip was padded or truncated to a fixed duration of 5 seconds so that all samples had a consistent length of 80,000 samples at 16 kHz, ensuring a uniform number of analysis frames across the dataset
+
+These steps helped reduce unnecessary variation across clips and improved the stability and consistency of the feature extraction process.
 
 ## Feature Extraction
 A set of DSP-based features was extracted from each audio clip to represent its acoustic characteristics in a compact numerical form.
@@ -90,16 +93,26 @@ The following audio features were extracted to capture both the spectral and tem
 For each feature type, summary statistics such as **mean**, **standard deviation**, and **median** were computed across time frames to produce a fixed-length feature vector for classification.
 
 ## Data Augmentation
-To improve robustness, lightweight audio augmentation was applied during training.
+To improve generalization and robustness, lightweight audio augmentation was used during training. The aim was not to dramatically alter the identity of the sound, but to expose the classifier to realistic variations that could appear in distorted test conditions.
 
+### Augmentation methods used
 The augmentation pipeline included:
 
-- Mild random gain scaling
-- Optional white Gaussian noise
-- Optional Butterworth-based filtering
-- Optional bandwidth limitation via resampling
+- **Mild random gain scaling**  
+  Simulates variation in recording level and loudness.
 
-Only mild augmentation was used so that the model could learn to handle distorted audio without drifting too far away from the clean training distribution. The augmented clips were used to improve robustness, while the original clips remained part of the training set.
+- **Optional white Gaussian noise**  
+  Introduces mild background noise to improve robustness under noisy conditions.
+
+- **Optional Butterworth-based filtering**  
+  Applies frequency-selective filtering to simulate changes in signal characteristics.
+
+- **Optional bandwidth limitation via resampling**  
+  Reduces frequency content to simulate band-limited audio conditions.
+
+Only mild augmentation was used so that the model could learn useful invariances without drifting too far away from the original clean audio distribution. The original waveform was always retained, while the augmented version was used as an additional training example.
+
+This was intended to improve robustness while still preserving clean-condition performance.
 
 ---
 
@@ -138,7 +151,7 @@ The final validation output achieved:
 - **Macro-F1:** 0.7152
 - **Weighted F1:** 0.72
 
-The class-wise classification report showed that many classes performed strongly, while more ambiguous environmental sounds such as `washing_machine`, `wind`, and `vacuum_cleaner` remained more challenging. Overall, the results suggest that the DSP feature set and SVM classifier were able to capture useful distinctions across a wide range of environmental sound classes.
+The class-wise classification report showed that many classes performed strongly, while more ambiguous environmental sounds, such as `washing_machine`, `wind`, and `vacuum_cleaner`, remained more challenging. Overall, the results suggest that the DSP feature set and SVM classifier were able to capture useful distinctions across a wide range of environmental sound classes.
 
 ---
 
@@ -156,11 +169,19 @@ This is consistent with the fact that SVM often works well in high-dimensional f
 4. Run all cells from top to bottom
 5. The notebook will generate the trained model file and prediction CSV
 
+## Dependencies  
+- `numpy`
+- `pandas`
+- `librosa`
+- `scikit-learn`
+- `scipy`
+- `joblib`
+- `tqdm`
+
 ## Repository Structure
 ```text
 .
 ├── CEG3004_Project_Colab.ipynb   # Main notebook
 ├── README.md                     # Project documentation
 ├── Pr_33_model.joblib            # Trained model file
-├── Pr_33_model.csv               # Submission predictions
-└── requirements.txt              # Python dependencies
+└── Pr_33_model.csv               # Submission predictions
