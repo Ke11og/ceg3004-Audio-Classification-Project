@@ -1,16 +1,16 @@
 # CEG3004 Audio Classification Project
-### Pr_33
+## Pr_33
 
 This project implements an audio classification pipeline for the ESC-50 environmental sound dataset (50 classes, 2000 clips). The pipeline extracts hand-crafted DSP features from audio waveforms and classifies them using a Support Vector Machine (SVM) with an RBF kernel. The system is evaluated on clean, noisy, and band-limited versions of the submission set to assess robustness under realistic signal distortions.
 
-## Objective
+### Objective
 The main objectives are:  
 • Train on labelled environmental sound data  
 • Extract meaningful DSP features  
 • Use a machine learning classifier to classify into the 50 sound classes  
 • Demonstrates robustness to noise and bandwidth distortions  
 
-## Dataset  
+### Dataset  
 The project uses an environmental sound classification dataset derived from the ESC-50 collection.   
 The dataset contains 2,000 audio clips distributed across 50 sound classes, with 40 clips per class. Each clip is 5 seconds long and recorded as a single-channel (mono) waveform.
 The dataset is split into a labelled training set and an unlabeled submission set for evaluation.   
@@ -20,7 +20,7 @@ The submission set contains three versions of each clip:
 • Band-limited (frequency content restricted)  
 • All three versions correspond to the same underlying sound event but are designed to test the robustness of your DSP feature extraction and model design under realistic distortions.
 
-## Pipeline of the project  
+### Pipeline of the project  
 • Setup  
 • Dataset loading  
 • Preprocessing  
