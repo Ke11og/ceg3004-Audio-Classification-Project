@@ -1,8 +1,10 @@
 # CEG3004 Audio Classification Project  Pr_33
 
+## Overview
 This project implements an audio classification pipeline for the ESC-50 environmental sound dataset (50 classes, 2000 clips). The pipeline extracts hand-crafted DSP features from audio waveforms and classifies them using a Support Vector Machine (SVM) with an RBF kernel. The system is evaluated on clean, noisy, and band-limited versions of the submission set to assess robustness under realistic signal distortions.
+---
 
-### Objective
+## Objective
 The main objectives are:  
 • Train on labelled environmental sound data  
 • Extract meaningful DSP features  
@@ -10,14 +12,27 @@ The main objectives are:
 • Demonstrates robustness to noise and bandwidth distortions  
 
 ### Dataset  
-The project uses an environmental sound classification dataset derived from the ESC-50 collection.   
-The dataset contains 2,000 audio clips distributed across 50 sound classes, with 40 clips per class. Each clip is 5 seconds long and recorded as a single-channel (mono) waveform.
-The dataset is split into a labelled training set and an unlabeled submission set for evaluation.   
-The submission set contains three versions of each clip:  
-• Clean (original signal)  
-• Noisy (additive noise applied)  
-• Band-limited (frequency content restricted)  
-• All three versions correspond to the same underlying sound event but are designed to test the robustness of your DSP feature extraction and model design under realistic distortions.
+- **Total clips:** 2,000
+- **Number of classes:** 50
+- **Clips per class:** 40
+- **Clip duration:** 5 seconds
+- **Audio format:** mono waveform
+
+The dataset is divided into:
+
+- **Labelled training set** for model development
+- **Unlabelled submission set** for final evaluation
+
+Each submission clip is provided in three forms:
+
+- **Clean** – original signal
+- **Noisy** – additive noise applied
+- **Band-limited** – frequency content restricted
+
+These variations are intended to evaluate how robust the DSP pipeline and classifier are under realistic distortions.
+
+---
+
 
 ### Pipeline of the project  
 • Setup  
